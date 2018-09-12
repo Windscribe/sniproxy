@@ -78,7 +78,9 @@ class SNIProxy(object):
         logging.info('Attmpt open_connection to {}'.format(server_name))
         remote_reader, remote_writer = yield from asyncio.open_connection(server_name, self._port)
         remote_writer.write(data)
-        asyncio.async(self.io_copy(reader, remote_writer))
+        # asyncio.async(self.io_copy(reader, remote_writer))
+        task = getattr(asyncio, 'async')
+        task(self.io_copy(reader, remote_writer))
         yield from self.io_copy(remote_reader, writer)
 
 
