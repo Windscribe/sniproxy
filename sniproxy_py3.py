@@ -16,6 +16,7 @@ import struct
 
 def extract_server_name(packet):
     if packet.startswith(b'\x16\x03'):
+        logging.info('packet starts with \x16\x03')
         stream = io.BytesIO(packet)
         stream.read(0x2b)
         session_id_length = ord(stream.read(1))
@@ -33,6 +34,7 @@ def extract_server_name(packet):
             edata = stream.read(elen)
             if etype == 0:
                 server_name = edata[5:].decode()
+                logging.info('returning server_name: {}'.format(server_name))
                 return server_name
 
 
