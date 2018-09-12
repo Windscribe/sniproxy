@@ -42,7 +42,11 @@ class SNIProxy(object):
     """Echo server class"""
 
     def __init__(self, host, port, loop=None):
-        self._loop = loop or asyncio.get_event_loop()
+        # self._loop = loop or asyncio.get_event_loop()
+        
+        _loop = asyncio.ProactorEventLoop()
+        self._loop = asyncio.set_event_loop(_loop)
+        
         self._port = port
         self._server = asyncio.start_server(self.handle_connection, port=self._port)
 
